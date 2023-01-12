@@ -117,6 +117,20 @@ export class User extends Component<{}, State> {
 			days: data.days.map(day => <Day key={this.id++} {...day} />),
 		})
 		globalData = data
+
+		var amounts: number[] = []
+		var users = getUsers()
+		users.forEach((_, index) => amounts[index] = 0)
+		getData().days.forEach(day => {
+			day.groups.forEach(group => {
+				group.shifts.forEach(shift => {
+					shift.memberIDs.forEach(id => amounts[id] = amounts[id] + 1)
+				})
+			})
+		})
+
+		console.log(amounts.map((amount, index) => { return { index, name: users[index], amount } }).sort((a, b) => a.amount - b.amount))
+		console.log(amounts.map((amount, index) => { return { index, name: users[index], amount } }).filter((user) => user.amount === 0 && user.index > 2))
 	}
 
 	render() {
