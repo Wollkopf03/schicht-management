@@ -59,7 +59,7 @@ export function Shift(props: ShiftType) {
 	if (props.memberIDs.length === 0 && getData().expires < Date.now() / 1000)
 		return <></>
 	return (
-		< Paper variant="outlined" sx={{ my: 1, p: 2, position: "relative" }}>
+		<Paper variant="outlined" sx={{ my: 1, p: 2, position: "relative" }}>
 			<Typography>
 				{props.start} - {props.end}
 			</Typography>
