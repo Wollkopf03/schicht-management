@@ -94,6 +94,7 @@ export class Admin extends Component<{}, State> {
 		this.setState({
 			days: data.days.map(day => <Day subscribe={this.subscribe} delete={this.delete} id={this.id} key={this.id++} data={day} />)
 		})
+		setEnableTimeSlots(() => this.state.enableTimeSlots)
 	}
 
 	toggleEnableTimeSlots = () => {
