@@ -56,29 +56,33 @@ export function Shift(props: ShiftType) {
 			})
 		})
 	})
-
+	if (props.memberIDs.length === 0 && getData().expires < Date.now() / 1000)
+		return <></>
 	return (
-		<Paper variant="outlined" sx={{ my: 1, p: 2, position: "relative" }}>
+		< Paper variant="outlined" sx={{ my: 1, p: 2, position: "relative" }}>
 			<Typography>
 				{props.start} - {props.end}
 			</Typography>
-			<Typography color={props.memberIDs.length === props.maxMembers ? "red" : "green"}>
-				{props.memberIDs.length} / {props.maxMembers} belegt
-			</Typography>
+			{
+				getData().expires > Date.now() / 1000 &&
+				<Typography color={props.memberIDs.length === props.maxMembers ? "red" : "green"}>
+					{props.memberIDs.length} / {props.maxMembers} belegt
+				</Typography>
+			}
 			<Typography color={grey[600]}>
 				{props.memberIDs.map((id, index) => <span key={index}>{getUsers()[id]}<br /></span>)}
 			</Typography>
 			{
-				props.memberIDs.indexOf(getTokenData().user_id) === -1 ?
-					props.timeSlot && slotAlreadyTaken ?
-						<Button variant="contained" sx={{ mt: 1 }} disabled>Kann nicht belegt werden</Button>
-						:
-						props.memberIDs.length >= props.maxMembers ?
-							<Button variant="contained" sx={{ mt: 1 }} disabled>Leider belegt</Button> :
-							<Button variant="contained" sx={{ mt: 1 }} onClick={handleClick}>Teilnehmen</Button> :
-					<ThemeProvider theme={redButton}>
-						<Button variant="contained" sx={{ mt: 1, background: "red" }} onClick={handleClick}>Nicht mehr teilnehmen</Button>
-					</ThemeProvider>
+				getData().expires > Date.now() / 1000 && (
+					props.memberIDs.indexOf(getTokenData().user_id) === -1 ?
+						props.timeSlot && slotAlreadyTaken ?
+							<Button variant="contained" sx={{ mt: 1 }} disabled>Kann nicht belegt werden</Button> :
+							props.memberIDs.length >= props.maxMembers ?
+								<Button variant="contained" sx={{ mt: 1 }} disabled>Leider belegt</Button> :
+								<Button variant="contained" sx={{ mt: 1 }} onClick={handleClick}>Teilnehmen</Button> :
+						<ThemeProvider theme={redButton}>
+							<Button variant="contained" sx={{ mt: 1, background: "red" }} onClick={handleClick}>Nicht mehr teilnehmen</Button>
+						</ThemeProvider>)
 			}
 		</Paper >
 	)
