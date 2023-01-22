@@ -1,6 +1,7 @@
 
 
 export type ProjectStructure = {
+	expires: number,
 	name: string,
 	days: DayType[]
 }
